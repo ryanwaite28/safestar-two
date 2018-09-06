@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  {% include 'includes/_dependencies.html' %}
+
+  <title>Safe Star | Sign Up!</title>
+</head>
+
+<body>
+
+  {% if signed_in %} {% include 'includes/nav-signed-in.html' %} {% else %} {% include 'includes/nav-signed-out.html' %} {% endif %}
+
+  <!--  -->
+
+  <div id="main-container" class="container container-top-space">
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel">
+          <h5 class="text-center">Sign Up!</h5>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel ovf-h">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s4">
+                <input placeholder="First Name" id="first_name_input" type="text" class="validate" required>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="Middle Name" id="middle_name_input" type="text" class="validate" required>
+              </div>
+              <div class="input-field col s4">
+                <input placeholder="Last name" id="last_name_input" type="text" class="validate" required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s12">
+                <input placeholder="Email Address" id="email_input" type="email" class="validate" required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="Password" id="password_input" type="password" class="validate" required>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="Confirm Password" id="password_verify_input" type="password" class="validate" required>
+              </div>
+            </div>
+            <a id="submit-btn" class="action-btn btn-large waves-effect waves-light red">
+              Submit
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/js/pages/signup-ctrl.min.js"></script>
+
+  <!--  -->
+
+  {% include 'includes/footer.html' %}
+
+</body>
+
+</html>

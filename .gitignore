@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+client/safe-star/node_modules/
+
+# images
+./*.png
+./*.jpg
+
+# glyphs
+src/vault/other/
+
+# sqlite database
+database.sqlite
+
+# firebase-admin service account json
+server/firebase_config/firebase.json
+server/firebase_config/firebase-admin.json

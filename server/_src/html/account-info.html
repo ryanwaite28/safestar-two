@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% include 'includes/_dependencies.html' %}
+
+    <title>Safe Star | Account Info!</title>
+  </head>
+  <body>
+
+
+
+    {% if signed_in %}
+      {% include 'includes/nav-signed-in.html' %}
+    {% else %}
+      {% include 'includes/nav-signed-out.html' %}
+    {% endif %}
+
+    <!--  -->
+
+    <div id="main-container" class="container container-top-space">
+      <div class="row">
+        <div class="col s12">
+          <div class="card-panel">
+            <h5 class="text-center">Your Information</h5>
+            <p class="text-center">
+              <span id="user_fields_count">0</span> Field(s)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="text-center">Add Field</h5>
+            </div>
+            <div class="card-action">
+              <div class="row">
+                <div class="input-field col s12 m6">
+                  <input placeholder="New Name" id="new_user_field_name" type="text" class="validate" />
+                </div>
+                <div class="input-field col s12 m6">
+                  <input placeholder="New Value" id="new_user_field_value" type="text" class="validate" />
+                </div>
+                <a id="submit_new_user_field_btn" class="action-btn btn-floating btn-large waves-effect waves-light green" title="Add New user Field">
+                  <i class="material-icons">add</i>
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div id="user_fields_list" class="card">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="/js/pages/account-info-ctrl.min.js"></script>
+
+    <!--  -->
+
+    {% include 'includes/footer.html' %}
+
+  </body>
+</html>

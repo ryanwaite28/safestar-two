@@ -1,0 +1,3 @@
+yarn add prop-types react-router react-router-dom redux react-redux @material-ui/core @material-ui/icons
+
+yarn add @babel/core @babel/preset-env

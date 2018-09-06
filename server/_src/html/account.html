@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% include 'includes/_dependencies.html' %}
+
+    <title>Safe Star | Account!</title>
+  </head>
+  <body>
+
+    {% if signed_in %}
+      {% include 'includes/nav-signed-in.html' %}
+    {% else %}
+      {% include 'includes/nav-signed-out.html' %}
+    {% endif %}
+
+    <!--  -->
+
+    <div id="main-container" class="container container-top-space">
+      <div class="row">
+        <div class="col s12 m5">
+          <div class="card-panel">
+            <h5 class="text-center">
+              Hi <span id="first_name_span"></span> <span id="middle_name_span"></span> <span id="last_name_span"></span>!
+            </h5>
+            <br/>
+            <img id="account-icon" class="polaroid" src="" alt="Account Icon">
+          </div>
+
+          <div class="card-panel ovf-h">
+            <form action="#">
+              <h5 class="text-center">Update Icon</h5>
+              <br/>
+              <div class="file-field input-field">
+                <div class="btn">
+                  <span>File</span>
+                  <input id="icon-input" type="file" accept="image/*"/>
+                </div>
+                <div class="file-path-wrapper">
+                  <input id="icon-input-text" class="file-path validate" type="text"/>
+                </div>
+                <br/>
+                <a id="submit-icon-btn" class="action-btn btn-large waves-effect waves-light red">
+                  Submit
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="col s12 m7">
+          <div class="card-panel">
+            <h5 class="text-center">Notifications</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="/js/pages/account-ctrl.min.js"></script>
+
+    <!--  -->
+
+    {% include 'includes/footer.html' %}
+
+  </body>
+</html>
