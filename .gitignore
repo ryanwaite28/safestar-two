@@ -3,8 +3,8 @@ node_modules/
 client/safe-star/node_modules/
 
 # images
-./*.png
-./*.jpg
+*.png
+*.jpg
 
 # glyphs
 src/vault/other/
