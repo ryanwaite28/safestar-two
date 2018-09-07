@@ -21,14 +21,41 @@
       <div class="row">
         <div class="col s12">
           <div class="card-panel">
-            <h5 class="text-center"></h5>
+            <h4 class="text-center">
+              <strong><span id="first_name_span"></span> <span id="middle_name_span"></span> <span id="last_name_span"></span></strong>
+            </h4>
+            <h5 class="text-center">Your Assets</h5>
+            <p class="text-center">
+              <span id="user_assets_count">0</span> Asset(s)
+            </p>
           </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="text-center">Add Asset</h5>
+            </div>
+            <div class="card-action">
+              <div class="row">
+                <div class="input-field col s12 m12">
+                  <input placeholder="New Asset Name" id="new_user_asset_name" type="text" class="validate" />
+                </div>
+                <a id="submit_new_user_asset_btn" class="action-btn btn-floating btn-large waves-effect waves-light green" title="Add New Asset">
+                  <i class="material-icons">add</i>
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <div class="row">
+        <div class="col s12">
+          <div id="user_assets_list" class="card">
+
+          </div>
         </div>
       </div>
     </div>

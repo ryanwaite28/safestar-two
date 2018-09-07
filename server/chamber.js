@@ -28,6 +28,7 @@ var pages = {
   account: 'account.html',
   account_info: 'account-info.html',
   account_assets: 'account-assets.html',
+  asset_fields: 'asset-fields.html',
   generic: 'generic.html',
   error: 'error.html',
 }
@@ -40,25 +41,43 @@ vt97y08bru-inwre9vyn0wu-miw0bgwre_Ym4u387gtg=gt7cbuew_vtduefhbjjv
 // --- Helper Functions
 
 function validateEmail(email) {
+  if(!email) { return false; }
   if(email.constructor !== String) { return false; }
 	var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email.toLowerCase());
 }
 
 function validateName(name) {
+  if(!name) { return false; }
   if(name.constructor !== String) { return false; }
 	var re = /^[a-zA-Z]{2,50}$/;
 	return re.test(name.toLowerCase());
 }
 
+function validateAssetName(name) {
+  if(!name) { return false; }
+  if(name.constructor !== String) { return false; }
+	var re = /^[a-zA-Z0-9\s\-\_\']{2,50}$/;
+	return re.test(name.toLowerCase());
+}
+
+function validateEntityName(name) {
+  if(!name) { return false; }
+  if(name.constructor !== String) { return false; }
+	var re = /^[a-zA-Z0-9\s\-\_\']{2,50}$/;
+	return re.test(name.toLowerCase());
+}
+
 function validateField(field) {
+  if(!field) { return false; }
   if(field.constructor !== String) { return false; }
 	var re = /^[a-zA-Z0-9\s]{2,50}$/;
 	return re.test(field.toLowerCase());
 }
 
 function validateInteger(number) {
-  // if(number.constructor !== Number) { return false; }
+  if(!number) { return false; }
+  if(number.constructor !== Number) { return false; }
 	var re = /^[0-9]+$/;
 	return re.test(number);
 }
@@ -158,8 +177,15 @@ function EntitySessionRequired(request, response, next) {
   else { next(); }
 }
 
+/* --- */
 
-// --- Export it
+
+function scanEntityForm(obj) {
+
+}
+
+
+/* --- */
 
 module.exports = {
   paths,
@@ -170,6 +196,7 @@ module.exports = {
   capitalize,
   validateEmail,
   validateName,
+  validateAssetName,
   validateField,
   validateInteger,
   randomValue,

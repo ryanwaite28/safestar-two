@@ -4,6 +4,9 @@ $(document).ready(function(){
   let new_user_field_value = $('#new_user_field_value');
   let user_fields_count = $('#user_fields_count');
   let user_fields_list = $('#user_fields_list');
+  let first_name_span = $('#first_name_span');
+  let middle_name_span = $('#middle_name_span');
+  let last_name_span = $('#last_name_span');
 
   let session;
   let user_fields = {};
@@ -16,6 +19,9 @@ $(document).ready(function(){
   Promise.all(init_promises)
   .then(values => {
     let session = values[0];
+    first_name_span.text(tools.capitalize(session.user.fname));
+    middle_name_span.text(tools.capitalize(session.user.mname));
+    last_name_span.text(tools.capitalize(session.user.lname));
     tools.array_sort_by(values[1].user_fields, "id", "desc").forEach(field => {
       user_fields[field.unique_value] = field;
       user_fields_list.append($(field.dom));
@@ -40,9 +46,11 @@ $(document).ready(function(){
   function add_user_field() {
     let user_field_name = new_user_field_name.val();
     let user_field_value = new_user_field_value.val();
+    tools.setActionButtonsDisabledState(true);
     client.add_user_field({ user_field_name, user_field_value })
     .then(resp => {
       console.log(resp);
+      tools.setActionButtonsDisabledState(false);
       window.M.toast({html: resp.message});
       if(resp.error) { return; }
       user_fields[resp.new_user_field.unique_value] = resp.new_user_field;
@@ -64,9 +72,11 @@ $(document).ready(function(){
     let name = $(edit_fieldname_selector).val();
     let value = $(edit_fieldvalue_selector).val();
 
+    tools.setActionButtonsDisabledState(true);
     client.edit_user_field({ user_field_name: name, user_field_value: value, user_field_id: field.id })
     .then(resp => {
       console.log(resp);
+      tools.setActionButtonsDisabledState(false);
       window.M.toast({html: resp.message});
       if(resp.error) { return; }
 
@@ -86,9 +96,11 @@ $(document).ready(function(){
     let ask = window.confirm('Are you sure you want to delete "' + field.name + '"?');
     if(!ask) { return; }
 
+    tools.setActionButtonsDisabledState(true);
     client.delete_user_field({ user_field_id: field.id })
     .then(resp => {
       console.log(resp);
+      tools.setActionButtonsDisabledState(false);
       window.M.toast({html: resp.message});
       if(resp.error) { return; }
 

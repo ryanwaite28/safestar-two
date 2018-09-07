@@ -3,7 +3,7 @@
   <head>
     {% include 'includes/_dependencies.html' %}
 
-    <title>Safe Star | Account Info!</title>
+    <title>Safe Star | Asset Fields!</title>
   </head>
   <body>
 
@@ -22,11 +22,11 @@
         <div class="col s12">
           <div class="card-panel">
             <h4 class="text-center">
-              <strong><span id="first_name_span"></span> <span id="middle_name_span"></span> <span id="last_name_span"></span></strong>
+              <strong><span id="asset_name_heading"></span></strong>
             </h4>
-            <h5 class="text-center">Your Information</h5>
+            <h5 class="text-center">Asset Fields</h5>
             <p class="text-center">
-              <span id="user_fields_count">0</span> Field(s)
+              <span id="asset_fields_count">0</span> Field(s)
             </p>
           </div>
         </div>
@@ -41,12 +41,12 @@
             <div class="card-action">
               <div class="row">
                 <div class="input-field col s12 m6">
-                  <input placeholder="New Field Name" id="new_user_field_name" type="text" class="validate" />
+                  <input placeholder="New Field Name" id="new_asset_field_name" type="text" class="validate" />
                 </div>
                 <div class="input-field col s12 m6">
-                  <input placeholder="New Field Value" id="new_user_field_value" type="text" class="validate" />
+                  <input placeholder="New Field Value" id="new_asset_field_value" type="text" class="validate" />
                 </div>
-                <a id="submit_new_user_field_btn" class="action-btn btn-floating btn-large waves-effect waves-light green" title="Add New Field">
+                <a id="submit_new_asset_field_btn" class="action-btn btn-floating btn-large waves-effect waves-light green" title="Add New Field">
                   <i class="material-icons">add</i>
                 </a>
             </div>
@@ -56,7 +56,7 @@
 
       <div class="row">
         <div class="col s12">
-          <div id="user_fields_list" class="card">
+          <div id="asset_fields_list" class="card">
 
           </div>
         </div>
@@ -64,7 +64,7 @@
     </div>
 
 
-    <script src="/js/pages/account-info-ctrl.min.js"></script>
+    <script src="/js/pages/asset-fields-ctrl.min.js"></script>
 
     <!--  -->
 

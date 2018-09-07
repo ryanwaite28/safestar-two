@@ -12,9 +12,9 @@ $(document).ready(function(){
 
     client.sign_up(data_obj)
     .then(resp => {
-      if(resp.error) { return M.toast({html: resp.message}); }
       M.toast({html: resp.message});
-      setTimeout(() => { window.location.href = '/account'; }, 2000);
+      if(resp.error) { return; }
+      setTimeout(() => { window.location.href = '/account'; }, 500);
     })
   });
 

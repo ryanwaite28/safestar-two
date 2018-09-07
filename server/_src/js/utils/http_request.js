@@ -29,7 +29,6 @@ const client = (function(){
   Client.test_route = function test_route() {
     return send_request("/test_route", "GET", null, null);
   }
-
   Client.check_session = function check_session() {
     return send_request("/check_session", "GET", null, null);
   }
@@ -37,17 +36,23 @@ const client = (function(){
   Client.get_user_fields = function get_user_fields() {
     return send_request("/get_user_fields", "GET", null, null);
   }
-
+  Client.get_user_assets = function get_user_assets() {
+    return send_request("/get_user_assets", "GET", null, null);
+  }
+  Client.get_user_asset = function get_user_asset(asset_unique_value) {
+    return send_request("/get_user_asset/" + asset_unique_value, "GET", null, null);
+  }
+  Client.get_asset_fields = function get_asset_fields(asset_id) {
+    return send_request("/get_asset_fields/" + asset_id, "GET", null, null);
+  }
 
 
   Client.sign_up = function sign_up(data) {
     return send_request("/sign_up", "POST", data, null);
   }
-
   Client.sign_in = function sign_in(data) {
     return send_request("/sign_in", "POST", data, null);
   }
-
   Client.sign_out = function sign_out() {
     return send_request("/sign_out", "POST", null, null);
   }
@@ -59,30 +64,38 @@ const client = (function(){
   Client.add_user_field = function add_user_field(data) {
     return send_request("/add_user_field", "POST", data, null);
   }
-
   Client.edit_user_field = function edit_user_field(data) {
     return send_request("/edit_user_field", "POST", data, null);
   }
-
   Client.delete_user_field = function delete_user_field(data) {
     return send_request("/delete_user_field", "POST", data, null);
   }
 
-  Client.add_asset = function add_asset(data) {
-    return add_asset("/add_asset", "POST", data, null);
+  Client.add_user_asset = function add_user_asset(data) {
+    return send_request("/add_user_asset", "POST", data, null);
+  }
+  Client.edit_user_asset = function edit_user_asset(data) {
+    return send_request("/edit_user_asset", "POST", data, null);
+  }
+  Client.delete_user_asset = function delete_user_asset(data) {
+    return send_request("/delete_user_asset", "POST", data, null);
   }
 
   Client.add_asset_field = function add_asset_field(data) {
     return send_request("/add_asset_field", "POST", data, null);
   }
-
   Client.edit_asset_field = function edit_asset_field(data) {
     return send_request("/edit_asset_field", "POST", data, null);
   }
-
   Client.delete_asset_field = function delete_asset_field(data) {
     return send_request("/delete_asset_field", "POST", data, null);
   }
+
+  /* --- */
+
+
+  
+
 
   /* --- */
 

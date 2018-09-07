@@ -1,0 +1,48 @@
+<div id="asset_field_{{ asset_field.unique_value }}" class="card-action" data-asset_field_unique_value="{{ asset_field.unique_value }}">
+  <div class="row">
+    <div class="col s12 m4">
+      <p>
+        <strong>Name</strong><br/>
+        {{ asset_field.name }}
+      </p>
+    </div>
+    <div class="col s12 m4">
+      <p>
+        <strong>Value</strong><br/>
+        {{ asset_field.value }}
+      </p>
+    </div>
+    <div class="col s12 m4">
+      <p class="btns-p">
+        <a title="Edit {{ asset_field.name }}" class="edit_asset_field_btn btn-floating waves-effect waves-light blue" data-asset_field_unique_value="{{ asset_field.unique_value }}">
+          <i class="material-icons">edit</i>
+        </a>
+        <span class="span_space_1" style="margin: 5px"></span>
+        <a title="Delete {{ asset_field.name }}" class="delete_asset_field_btn btn-floating waves-effect waves-light red" data-asset_field_unique_value="{{ asset_field.unique_value }}">
+          <i class="material-icons">delete_forever</i>
+        </a>
+      </p>
+    </div>
+  </div>
+  <div id="edit_asset_field_box_{{ asset_field.unique_value }}" class="row ghost-1">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-action ovf-h">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s6">
+                <input placeholder="User Field Name" value="{{ asset_field.name }}" class="edit_asset_field_name_input" id="edit_asset_field_name_input_{{ asset_field.unique_value }}" type="text" class="validate" data-asset_field_unique_value="{{ asset_field.unique_value }}" required>
+              </div>
+              <div class="input-field col s6">
+                <input placeholder="User Field Value" value="{{ asset_field.value }}" class="edit_asset_field_value_input" id="edit_asset_field_value_input_{{ asset_field.unique_value }}" type="text" class="validate" data-asset_field_unique_value="{{ asset_field.unique_value }}" required>
+              </div>
+            </div>
+            <a id="submit-btn" class="action-btn btn submit_edits_asset_field_btn waves-effect waves-light blue" data-asset_field_unique_value="{{ asset_field.unique_value }}">
+              Submit
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -17,7 +17,7 @@ function sign_up(request, response) {
   (async function() {
     if(request.session.id) { return response.json({ error: true, message: "Client already signed in" }) }
 
-    var { fname, mname, lname, password, password_verify } = request.body;
+    var { fname, mname, lname, email, password, password_verify } = request.body;
     if(email) { email = email.toLowerCase(); }
 
     if(!fname) {
@@ -84,6 +84,9 @@ function sign_in(request, response) {
     if(!email) {
       return response.json({ error: true, message: 'Email Address field is required' });
     }
+    if(!chamber.validateEmail(email)) {
+      return response.json({ error: true, message: 'Email is invalid' });
+    }
     if(!password) {
       return response.json({ error: true, message: 'Password field is required' });
     }
@@ -110,7 +113,7 @@ function sign_out(request, response) {
   return response.json({ online: false, successful: true });
 }
 
-/* --- */
+/* --- Account Handlers --- */
 
 function update_icon(request, response) {
   let icon_image = request.files && request.files.icon_image || null;
@@ -138,13 +141,15 @@ function update_icon(request, response) {
   });
 }
 
+/* --- CRUD: User Fields --- */
+
 function add_user_field(request, response) {
   let { user_field_name, user_field_value } = request.body;
   if(!chamber.validateField(user_field_name)) {
-    return response.json({ error: true, message: 'New Name field is required; must be only letters and numbers, 2-50 characters' });
+    return response.json({ error: true, message: 'New Field Name field is required; must be only letters and numbers, 2-50 characters' });
   }
   if(!user_field_value) {
-    return response.json({ error: true, message: 'New Value field is required; cannot be empty' });
+    return response.json({ error: true, message: 'New Field Value field is required; cannot be empty' });
   }
   models.UserFields.create({ user_id: request.session.you.id, name: user_field_name, value: user_field_value })
   .then(new_user_field => {
@@ -171,13 +176,11 @@ function edit_user_field(request, response) {
     return response.json({ error: true, message: '"user_field_id" is required; must be integer/number' });
   }
   models.UserFields.update({ name: user_field_name, value: user_field_value }, {where: {id: user_field_id, user_id: request.session.you.id}})
-  .then(res => {
-    models.UserFields.findOne({where: {id: user_field_id, user_id: request.session.you.id}})
-    .then(uf => {
-      let data = uf.dataValues;
-      let obj = Object.assign({}, data, {dom: templateEngine.UserField_DOM(data)});
-      return response.json({ res, user_field: obj, message: 'User Field Updated!' });
-    })
+  .then(res => models.UserFields.findOne({where: {id: user_field_id, user_id: request.session.you.id}}))
+  .then(uf => {
+    let data = uf.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.UserField_DOM(data)});
+    return response.json({ user_field: obj, message: 'User Field Updated!' });
   })
   .catch(error => {
     console.log('error', error);
@@ -200,16 +203,18 @@ function delete_user_field(request, response) {
   });
 }
 
+/* --- CRUD: User Assets --- */
 
-
-function add_asset(request, response) {
+function add_user_asset(request, response) {
   let { asset_name } = request.body;
-  if(!chamber.validateField(asset_name)) {
-    return response.json({ error: true, message: '"asset_name" is required; must be only letters and numbers, 2-50 characters' });
+  if(!chamber.validateAssetName(asset_name)) {
+    return response.json({ error: true, message: 'New Asset Name field is required; must be only letters and numbers, 2-50 characters' });
   }
   models.Assets.create({ user_id: request.session.you.id, name: asset_name })
   .then(new_asset => {
-    return response.json({ new_asset: new_asset.dataValues, message: 'User Asset Created!' });
+    let data = new_asset.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.UserAsset_DOM(data)});
+    return response.json({ new_user_asset: obj, message: 'User Asset Created!' });
   })
   .catch(error => {
     console.log('error', error);
@@ -217,20 +222,60 @@ function add_asset(request, response) {
   });
 }
 
-function add_asset_field(request, response) {
-  let { field_name, field_value, asset_id } = request.body;
-  if(!chamber.validateField(field_name)) {
-    return response.json({ error: true, message: '"field_name" is required; must be only letters and numbers, 2-50 characters' });
-  }
-  if(!field_value) {
-    return response.json({ error: true, message: '"field_value" is required' });
+function edit_user_asset(request, response) {
+  let { asset_name, asset_id } = request.body;
+  if(!chamber.validateAssetName(asset_name)) {
+    return response.json({ error: true, message: 'New Asset Name field is required; must be only letters and numbers, 2-50 characters' });
   }
   if(!chamber.validateInteger(asset_id)) {
     return response.json({ error: true, message: '"asset_id" is required; must be integer/number' });
   }
-  models.AssetFields.create({ asset_id, name: field_name, value: field_value })
+  models.Assets.update({ name: asset_name }, {where: {id: asset_id, user_id: request.session.you.id}})
+  .then(res => models.Assets.findOne({where: {id: asset_id, user_id: request.session.you.id}}))
+  .then(ua => {
+    let data = ua.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.UserAsset_DOM(data)});
+    return response.json({ user_asset: obj, message: 'User Asset Updated!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not update user asset...' });
+  });
+}
+
+function delete_user_asset(request, response) {
+  let { asset_id } = request.body;
+  if(!chamber.validateInteger(asset_id)) {
+    return response.json({ error: true, message: '"asset_id" is required; must be integer/number' });
+  }
+  models.Assets.destroy({where: {id: asset_id, user_id: request.session.you.id}})
+  .then(res => {
+    return response.json({ res, message: 'User Asset Deleted!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not delete user asset...' });
+  });
+}
+
+/* --- CRUD: Asset Fields --- */
+
+function add_asset_field(request, response) {
+  let { asset_field_name, asset_field_value, asset_id } = request.body;
+  if(!chamber.validateField(asset_field_name)) {
+    return response.json({ error: true, message: '"asset_field_name" is required; must be only letters and numbers, 2-50 characters' });
+  }
+  if(!asset_field_value) {
+    return response.json({ error: true, message: '"asset_field_value" is required' });
+  }
+  if(!chamber.validateInteger(asset_id)) {
+    return response.json({ error: true, message: '"asset_id" is required; must be integer/number' });
+  }
+  models.AssetFields.create({ asset_id, name: asset_field_name, value: asset_field_value, user_id: request.session.you.id })
   .then(new_asset_field => {
-    return response.json({ new_asset_field: new_asset_field.dataValues, message: 'Asset Field Created!' });
+    let data = new_asset_field.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.AssetField_DOM(data)});
+    return response.json({ new_asset_field: obj, message: 'Asset Field Created!' });
   })
   .catch(error => {
     console.log('error', error);
@@ -239,22 +284,22 @@ function add_asset_field(request, response) {
 }
 
 function edit_asset_field(request, response) {
-  let { field_name, field_value, asset_field_id } = request.body;
-  if(!chamber.validateField(field_name)) {
-    return response.json({ error: true, message: '"field_name" is required; must be only letters and numbers, 2-50 characters' });
+  let { asset_field_name, asset_field_value, asset_field_id } = request.body;
+  if(!chamber.validateField(asset_field_name)) {
+    return response.json({ error: true, message: '"asset_field_name" is required; must be only letters and numbers, 2-50 characters' });
   }
-  if(!field_value) {
-    return response.json({ error: true, message: '"field_value" is required' });
+  if(!asset_field_value) {
+    return response.json({ error: true, message: '"asset_field_value" is required' });
   }
   if(!chamber.validateInteger(asset_field_id)) {
     return response.json({ error: true, message: '"asset_field_id" is required; must be integer/number' });
   }
-  models.AssetFields.update({ name: field_name, value: field_value }, {where: {id: asset_field_id}})
-  .then(res => {
-    models.AssetFields.findOne({where: {id: asset_field_id, user_id: request.session.you.id}})
-    .then(af => {
-      return response.json({ res, asset_field: af.dataValues, message: 'Asset Field Updated!' });
-    })
+  models.AssetFields.update({ name: asset_field_name, value: asset_field_value }, {where: {id: asset_field_id, user_id: request.session.you.id}})
+  .then(res => models.AssetFields.findOne({where: {id: asset_field_id, user_id: request.session.you.id}}))
+  .then(af => {
+    let data = af.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.AssetField_DOM(data)});
+    return response.json({ asset_field: obj, message: 'Asset Field Updated!' });
   })
   .catch(error => {
     console.log('error', error);
@@ -267,7 +312,7 @@ function delete_asset_field(request, response) {
   if(!chamber.validateInteger(asset_field_id)) {
     return response.json({ error: true, message: '"asset_field_id" is required; must be integer/number' });
   }
-  models.AssetFields.destroy({where: {id: asset_field_id}})
+  models.AssetFields.destroy({where: {id: asset_field_id, user_id: request.session.you.id}})
   .then(res => {
     return response.json({ res, message: 'Asset Field Deleted!' });
   })
@@ -277,7 +322,126 @@ function delete_asset_field(request, response) {
   });
 }
 
+/* --- CRUD: User Entities --- */
 
+function add_user_entity(request, response) {
+  let check = chamber.scanEntityForm(request.body.form_obj);
+
+  if(!check.error) {
+    return response.json({ error: true, message: check.message });
+  }
+  models.Entities.create(check.form_obj)
+  .then(new_entity => {
+    let data = new_entity.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.UserEntity_DOM(data)});
+    return response.json({ new_user_entity: obj, message: 'User Entity Created!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not create new user entity...' });
+  });
+}
+
+function edit_user_entity(request, response) {
+  let check = chamber.scanEntityForm(request.body.form_obj);
+
+  if(!check.error) {
+    return response.json({ error: true, message: check.message });
+  }
+  models.Entitys.update({ name: entity_name }, {where: {id: entity_id, user_id: request.session.you.id}})
+  .then(res => models.Entitys.findOne({where: {id: entity_id, user_id: request.session.you.id}}))
+  .then(ue => {
+    let data = ue.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.UserEntity_DOM(data)});
+    return response.json({ user_entity: obj, message: 'User Entity Updated!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not update user entity...' });
+  });
+}
+
+function delete_user_entity(request, response) {
+  let { entity_id } = request.body;
+  if(!chamber.validateInteger(entity_id)) {
+    return response.json({ error: true, message: '"entity_id" is required; must be integer/number' });
+  }
+  models.Entities.destroy({where: {id: entity_id, user_id: request.session.you.id}})
+  .then(res => {
+    return response.json({ res, message: 'User Entity Deleted!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not delete user entity...' });
+  });
+}
+
+
+/* --- CRUD: Entity Fields --- */
+
+function add_entity_field(request, response) {
+  let { entity_field_name, entity_field_value, entity_id } = request.body;
+  if(!chamber.validateField(entity_field_name)) {
+    return response.json({ error: true, message: '"entity_field_name" is required; must be only letters and numbers, 2-50 characters' });
+  }
+  if(!entity_field_value) {
+    return response.json({ error: true, message: '"entity_field_value" is required' });
+  }
+  if(!chamber.validateInteger(entity_id)) {
+    return response.json({ error: true, message: '"entity_id" is required; must be integer/number' });
+  }
+  models.EntityFields.create({ entity_id, name: entity_field_name, value: entity_field_value, user_id: request.session.you.id })
+  .then(new_entity_field => {
+    let data = new_entity_field.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.EntityField_DOM(data)});
+    return response.json({ new_entity_field: obj, message: 'Entity Field Created!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not create new entity field...' });
+  });
+}
+
+function edit_entity_field(request, response) {
+  let { entity_field_name, entity_field_value, entity_field_id } = request.body;
+  if(!chamber.validateField(entity_field_name)) {
+    return response.json({ error: true, message: '"entity_field_name" is required; must be only letters and numbers, 2-50 characters' });
+  }
+  if(!entity_field_value) {
+    return response.json({ error: true, message: '"entity_field_value" is required' });
+  }
+  if(!chamber.validateInteger(entity_field_id)) {
+    return response.json({ error: true, message: '"entity_field_id" is required; must be integer/number' });
+  }
+  models.EntityFields.update({ name: entity_field_name, value: entity_field_value }, {where: {id: entity_field_id, user_id: request.session.you.id}})
+  .then(res => models.EntityFields.findOne({where: {id: entity_field_id, user_id: request.session.you.id}}))
+  .then(af => {
+    let data = af.dataValues;
+    let obj = Object.assign({}, data, {dom: templateEngine.EntityField_DOM(data)});
+    return response.json({ entity_field: obj, message: 'Entity Field Updated!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not update entity field...' });
+  });
+}
+
+function delete_entity_field(request, response) {
+  let { entity_field_id } = request.body;
+  if(!chamber.validateInteger(entity_field_id)) {
+    return response.json({ error: true, message: '"entity_field_id" is required; must be integer/number' });
+  }
+  models.EntityFields.destroy({where: {id: entity_field_id, user_id: request.session.you.id}})
+  .then(res => {
+    return response.json({ res, message: 'Entity Field Deleted!' });
+  })
+  .catch(error => {
+    console.log('error', error);
+    return response.json({ error: true, message: 'Could not delete entity field...' });
+  });
+}
+
+/* --- */
 
 
 
@@ -288,11 +452,24 @@ module.exports = {
   sign_in,
   sign_out,
   update_icon,
+
   add_user_field,
   edit_user_field,
   delete_user_field,
-  add_asset,
+
+  add_user_asset,
+  edit_user_asset,
+  delete_user_asset,
+
+  add_user_entity,
+  edit_user_entity,
+  delete_user_entity,
+
   add_asset_field,
   edit_asset_field,
   delete_asset_field,
+
+  add_entity_field,
+  edit_entity_field,
+  delete_entity_field,
 }

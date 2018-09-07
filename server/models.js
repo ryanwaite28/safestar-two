@@ -37,6 +37,8 @@ models.Users = sequelize.define('users', {
   password:        { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   icon:            { type: Sequelize.STRING(500), allowNull: true, defaultValue: '' },
   verified:        { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
+  certified:       { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
+  is_entity:       { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
   unique_value:    { type: Sequelize.STRING, unique: true, defaultValue: chamber.uniqueValue }
 }, { freezeTableName: true, indexes: [{ unique: true, fields: ['email', 'unique_value'] }] });
 
@@ -51,11 +53,14 @@ models.UserFields = sequelize.define('user_fields', {
 
 
 models.Entities = sequelize.define('entities', {
+  user_id:         { type: Sequelize.INTEGER, allowNull: false, references: { model: models.Users, key: 'id' } },
   name:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   desc:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   industry:        { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   email:           { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   phone:           { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  website:         { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  code:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   p_o_c:           { type: Sequelize.STRING, allowNull: false, defaultValue: '' }, // point of contact
   icon:            { type: Sequelize.STRING(500), allowNull: true, defaultValue: '/images/anon.png' },
   verified:        { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
@@ -63,6 +68,7 @@ models.Entities = sequelize.define('entities', {
 }, { freezeTableName: true, indexes: [{ unique: true, fields: ['email', 'unique_value'] }] });
 
 models.EntityFields = sequelize.define('entity_fields', {
+  user_id:         { type: Sequelize.INTEGER, allowNull: false, references: { model: models.Users, key: 'id' } },
   entity_id:       { type: Sequelize.INTEGER, allowNull: false, references: { model: models.Entities, key: 'id' } },
   name:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
   type:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
@@ -76,7 +82,8 @@ models.Assets = sequelize.define('assets', {
   user_id:         { type: Sequelize.INTEGER, allowNull: false, references: { model: models.Users, key: 'id' } },
   entity_id:       { type: Sequelize.INTEGER, allowNull: true, references: { model: models.Entities, key: 'id' } },
   name:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
-  code:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  type:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  code:            { type: Sequelize.STRING, allowNull: true, defaultValue: '' },
   active:          { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: true },
   verified:        { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
   unique_value:    { type: Sequelize.STRING, unique: true, defaultValue: chamber.uniqueValue }

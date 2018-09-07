@@ -44,6 +44,16 @@ function account_assets_page(request, response) {
   return response.render(chamber.pages['account_assets'], { signed_in: request.session.id || false });
 }
 
+function asset_fields_page(request, response) {
+  let { asset_unique_value } = request.params;
+  models.Assets.findOne({where: {unique_value: asset_unique_value, user_id: request.session.you.id}})
+  .then(res => {
+    return !res ?
+    response.render(chamber.pages['error'], { message: 'Asset not found.', signed_in: request.session.id || false }) :
+    response.render(chamber.pages['asset_fields'], { signed_in: request.session.id || false });
+  });
+}
+
 /* AJAX */
 
 function test_route(request, response) {
@@ -73,6 +83,31 @@ function get_user_fields(request, response) {
   })
 }
 
+function get_user_asset(request, response) {
+  let { asset_unique_value } = request.params;
+  models.Assets.findOne({where: {unique_value: asset_unique_value, user_id: request.session.you.id}})
+  .then(asset => {
+    return response.json({ user_asset: asset && asset.dataValues || asset });
+  })
+}
+
+function get_user_assets(request, response) {
+  models.Assets.findAll({where: {user_id: request.session.you.id}})
+  .then(resp => {
+    let list = (resp.map(i => i.get({plain: true}))).reduce(function(acc, cur){ cur.dom = templateEngine.UserAsset_DOM(cur); return acc.concat([cur]) }, [])
+    return response.json({ user_assets: list });
+  })
+}
+
+function get_asset_fields(request, response) {
+  let { asset_id } = request.params;
+  models.AssetFields.findAll({where: {asset_id, user_id: request.session.you.id}})
+  .then(resp => {
+    let list = (resp.map(i => i.get({plain: true}))).reduce(function(acc, cur){ cur.dom = templateEngine.AssetField_DOM(cur); return acc.concat([cur]) }, [])
+    return response.json({ asset_fields: list });
+  })
+}
+
 
 
 /* --- Exports --- */
@@ -84,7 +119,11 @@ module.exports = {
   account_page,
   account_info_page,
   account_assets_page,
+  asset_fields_page,
   test_route,
   check_session,
-  get_user_fields
+  get_user_fields,
+  get_user_asset,
+  get_user_assets,
+  get_asset_fields
 }
