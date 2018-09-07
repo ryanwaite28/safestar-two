@@ -116,6 +116,22 @@ models.EntityNotifications = sequelize.define('entity_notifications', {
   unique_value:    { type: Sequelize.STRING, unique: true, defaultValue: chamber.uniqueValue }
 }, { freezeTableName: true, indexes: [{ unique: true, fields: ['unique_value'] }] });
 
+models.ApiKeys = sequelize.define('api_keys', {
+  key:                 { type: Sequelize.STRING, unique: true, defaultValue: chamber.greatUniqueValue },
+  firstname:           { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  middlename:          { type: Sequelize.STRING, allowNull: true, defaultValue: '' },
+  lastname:            { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  email:               { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  phone:               { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  website:             { type: Sequelize.STRING, allowNull: false, defaultValue: '' },
+  verified:            { type: Sequelize.BOOLEAN, allowNull: false, defaultValue: false },
+  date_created:        { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
+  requests_count:      { type: Sequelize.INTEGER, defaultValue: 0 }
+}, {
+  freezeTableName: true,
+  indexes: [{unique: true, fields: ['email', 'key'] }]
+});
+
 
 
 /* --- Relationships --- */
