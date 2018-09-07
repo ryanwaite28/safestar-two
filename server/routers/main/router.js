@@ -39,6 +39,10 @@ router.get('/signin', function(request, response) {
   GET.signin_page(request, response);
 });
 
+router.get('/signout', function(request, response){
+  GET.sign_out(request, response);
+});
+
 router.get('/account', chamber.GET_SessionRequired, function(request, response) {
   GET.account_page(request, response);
 });

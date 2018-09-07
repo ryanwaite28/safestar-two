@@ -32,6 +32,11 @@ function signin_page(request, response) {
   return response.render(chamber.pages['signin'], { signed_in: request.session.id || false });
 }
 
+function sign_out(request, response) {
+  request.session.reset();
+  return response.redirect('/');
+}
+
 function account_page(request, response) {
   return response.render(chamber.pages['account'], { signed_in: request.session.id || false });
 }
@@ -116,6 +121,7 @@ module.exports = {
   welcome_page,
   signup_page,
   signin_page,
+  sign_out,
   account_page,
   account_info_page,
   account_assets_page,
