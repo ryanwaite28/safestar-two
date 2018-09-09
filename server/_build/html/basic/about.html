@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% include 'includes/_dependencies.html' %}
+
+    <title>Safe Star | About!</title>
+  </head>
+  <body>
+
+
+
+    {% if signed_in %}
+      {% include 'includes/nav-signed-in.html' %}
+    {% else %}
+      {% include 'includes/nav-signed-out.html' %}
+    {% endif %}
+
+    <!--  -->
+
+    <div id="main-container" class="container container-top-space">
+      <div class="row">
+        <div class="col s12">
+          <div class="card-panel">
+            <h5 class="text-center">About</h5>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+
+        </div>
+      </div>
+    </div>
+
+
+    <!-- <script src="/js/pages/null-ctrl.min.js"></script> -->
+
+    <!--  -->
+
+    {% include 'includes/footer.html' %}
+
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    {% include 'includes/_dependencies.html' %}
+
+    <title>Safe Star | Account Entities!</title>
+  </head>
+  <body>
+
+
+
+    {% if signed_in %}
+      {% include 'includes/nav-signed-in.html' %}
+    {% else %}
+      {% include 'includes/nav-signed-out.html' %}
+    {% endif %}
+
+    <!--  -->
+
+    <div id="main-container" class="container container-top-space">
+      <div class="row">
+        <div class="col s12">
+          <div class="card-panel">
+            <h4 class="text-center">
+              <strong><span id="first_name_span"></span> <span id="middle_name_span"></span> <span id="last_name_span"></span></strong>
+            </h4>
+            <h5 class="text-center">Your Entities</h5>
+            <p class="text-center">
+              <span id="user_entities_count">0</span> Asset(s)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div class="card">
+            <div class="card-content">
+              <h5 class="text-center">Add Asset</h5>
+            </div>
+            <div class="card-action">
+              <div class="row">
+                <div class="input-field col s12 m12">
+                  <input placeholder="New Asset Name" id="new_user_entity_name" type="text" class="validate" />
+                </div>
+                <a id="submit_new_user_entity_btn" class="action-btn btn-floating btn-large waves-effect waves-light green" title="Add New Asset">
+                  <i class="material-icons">add</i>
+                </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div id="user_entities_list" class="card">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="/js/pages/account-entities-ctrl.min.js"></script>
+
+    <!--  -->
+
+    {% include 'includes/footer.html' %}
+
+  </body>
+</html>

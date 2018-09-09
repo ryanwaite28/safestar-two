@@ -90,95 +90,73 @@ router.get('/get_asset_fields/:asset_id', chamber.SessionRequired, function(requ
 /* --- POST Routes --- */
 
 
+
 router.post('/sign_up', function(request, response){
   POST.sign_up(request, response);
 });
-
-router.post('/sign_in', function(request, response){
-  POST.sign_in(request, response);
-});
-
-router.post('/sign_out', function(request, response){
-  POST.sign_out(request, response);
-});
-
-
-
-router.post('/update_icon', chamber.SessionRequired, function(request, response){
-  POST.update_icon(request, response);
-});
-
 
 router.post('/add_user_field', chamber.SessionRequired, function(request, response){
   POST.add_user_field(request, response);
 });
 
-router.post('/edit_user_field', chamber.SessionRequired, function(request, response){
-  POST.edit_user_field(request, response);
-});
-
-router.post('/delete_user_field', chamber.SessionRequired, function(request, response){
-  POST.delete_user_field(request, response);
-});
-
-
 router.post('/add_user_asset', chamber.SessionRequired, function(request, response){
   POST.add_user_asset(request, response);
 });
-
-router.post('/edit_user_asset', chamber.SessionRequired, function(request, response){
-  POST.edit_user_asset(request, response);
-});
-
-router.post('/delete_user_asset', chamber.SessionRequired, function(request, response){
-  POST.delete_user_asset(request, response);
-});
-
 
 router.post('/add_user_entity', chamber.SessionRequired, function(request, response){
   POST.add_user_entity(request, response);
 });
 
-router.post('/edit_user_entity', chamber.SessionRequired, function(request, response){
-  POST.edit_user_entity(request, response);
-});
-
-router.post('/delete_user_entity', chamber.SessionRequired, function(request, response){
-  POST.delete_user_entity(request, response);
-});
-
-
 router.post('/add_asset_field', chamber.SessionRequired, function(request, response){
   POST.add_asset_field(request, response);
 });
-
-router.post('/edit_asset_field', chamber.SessionRequired, function(request, response){
-  POST.edit_asset_field(request, response);
-});
-
-router.post('/delete_asset_field', chamber.SessionRequired, function(request, response){
-  POST.delete_asset_field(request, response);
-});
-
 
 router.post('/add_entity_field', chamber.SessionRequired, function(request, response){
   POST.add_entity_field(request, response);
 });
 
-router.post('/edit_entity_field', chamber.SessionRequired, function(request, response){
-  POST.edit_entity_field(request, response);
-});
-
-router.post('/delete_entity_field', chamber.SessionRequired, function(request, response){
-  POST.delete_entity_field(request, response);
-});
 
 
 /* --- PUT Routes --- */
 
 
 
+router.put('/sign_in', function(request, response){
+  PUT.sign_in(request, response);
+});
 
+router.put('/sign_out', function(request, response){
+  PUT.sign_out(request, response);
+});
+
+router.put('/update_icon', chamber.SessionRequired, function(request, response){
+  PUT.update_icon(request, response);
+});
+
+router.put('/change_user_password', chamber.SessionRequired, function(request, response){
+  PUT.change_user_password(request, response);
+});
+
+
+router.put('/edit_entity_field', chamber.SessionRequired, function(request, response){
+  PUT.edit_entity_field(request, response);
+});
+
+router.put('/edit_asset_field', chamber.SessionRequired, function(request, response){
+  PUT.edit_asset_field(request, response);
+});
+
+router.put('/edit_user_entity', chamber.SessionRequired, function(request, response){
+  PUT.edit_user_entity(request, response);
+});
+
+router.put('/edit_user_asset', chamber.SessionRequired, function(request, response){
+  PUT.edit_user_asset(request, response);
+});
+
+router.put('/edit_user_field', chamber.SessionRequired, function(request, response){
+  PUT.edit_user_field(request, response);
+});
 
 
 
@@ -186,6 +164,26 @@ router.post('/delete_entity_field', chamber.SessionRequired, function(request, r
 
 
 
+
+router.delete('/delete_entity_field', chamber.SessionRequired, function(request, response){
+  DELETE.delete_entity_field(request, response);
+});
+
+router.delete('/delete_asset_field', chamber.SessionRequired, function(request, response){
+  DELETE.delete_asset_field(request, response);
+});
+
+router.delete('/delete_user_field', chamber.SessionRequired, function(request, response){
+  DELETE.delete_user_field(request, response);
+});
+
+router.delete('/delete_user_asset', chamber.SessionRequired, function(request, response){
+  DELETE.delete_user_asset(request, response);
+});
+
+router.delete('/delete_user_entity', chamber.SessionRequired, function(request, response){
+  DELETE.delete_user_entity(request, response);
+});
 
 
 

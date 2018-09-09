@@ -1,0 +1,39 @@
+<div id="user_entity_{{ user_entity.unique_value }}" class="card-action" data-user_entity_unique_value="{{ user_entity.unique_value }}">
+  <div class="row">
+    <div class="col s12 m6">
+      <p>
+        <strong>Name</strong><br/>
+        <a title="{{ user_entity.name }} Page" href="/account/entities/{{ user_entity.unique_value }}">{{ user_entity.name }}</a>
+      </p>
+    </div>
+    <div class="col s12 m6">
+      <p class="btns-p">
+        <a title="Edit {{ user_entity.name }}" class="edit_user_entity_btn btn-floating waves-effect waves-light blue" data-user_entity_unique_value="{{ user_entity.unique_value }}">
+          <i class="material-icons">edit</i>
+        </a>
+        <span class="span_space_1" style="margin: 5px"></span>
+        <a title="Delete {{ user_entity.name }}" class="delete_user_entity_btn btn-floating waves-effect waves-light red" data-user_entity_unique_value="{{ user_entity.unique_value }}">
+          <i class="material-icons">delete_forever</i>
+        </a>
+      </p>
+    </div>
+  </div>
+  <div id="edit_user_entity_box_{{ user_entity.unique_value }}" class="row ghost-1">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-action ovf-h">
+          <form class="col s12">
+            <div class="row">
+              <div class="input-field col s12">
+                <input placeholder="User Asset Name" value="{{ user_entity.name }}" class="edit_user_entity_name_input" id="edit_user_entity_name_input_{{ user_entity.unique_value }}" type="text" class="validate" data-user_entity_unique_value="{{ user_entity.unique_value }}" required>
+              </div>
+            </div>
+            <a id="submit-btn" class="action-btn btn submit_edits_user_entity_btn waves-effect waves-light blue" data-user_entity_unique_value="{{ user_entity.unique_value }}">
+              Submit
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

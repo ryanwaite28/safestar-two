@@ -82,6 +82,25 @@ function validateInteger(number) {
 	return re.test(number);
 }
 
+function validatePassword(password) {
+  if(!password) { return false; }
+  if(password.constructor !== String) { return false; }
+
+  let hasMoreThanSixCharacters = password.length > 6;
+  let hasUpperCase = /[A-Z]/.test(password);
+  let hasLowerCase = /[a-z]/.test(password);
+  let hasNumbers = /\d/.test(password);
+  let hasNonalphas = /\W/.test(password);
+
+  return (
+    hasMoreThanSixCharacters &&
+    (hasUpperCase || hasLowerCase) &&
+    hasNumbers
+  );
+}
+
+
+
 function randomValue() {
   return String(Date.now()) +
     Math.random().toString(36).substr(2, 34)
@@ -199,6 +218,7 @@ module.exports = {
   validateAssetName,
   validateField,
   validateInteger,
+  validatePassword,
   randomValue,
   randomValueLong,
   uniqueValue,

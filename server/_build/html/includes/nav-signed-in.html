@@ -5,7 +5,7 @@
     <ul class="right hide-on-med-and-down">
       <li><a title="Account Info" href="/account/info">Info</a></li>
       <li><a title="Account Assets" href="/account/assets">Assets</a></li>
-      <li><a title="Sign Out" href="#" class="signout-btn">Sign Out</a></li>
+      <li><a title="Sign Out" href="/signout" class="signout-btn">Sign Out</a></li>
     </ul>
   </div>
 </nav>
@@ -13,18 +13,5 @@
 <ul class="sidenav" id="mobile-demo">
   <li><a title="Account Info" href="/account/info">Info</a></li>
   <li><a title="Account Assets" href="/account/assets">Assets</a></li>
-  <li><a title="Sign Out" href="#" class="signout-btn">Sign Out</a></li>
+  <li><a title="Sign Out" href="/signout" class="signout-btn">Sign Out</a></li>
 </ul>
-
-<script>
-  $(document).ready(function(){
-    $(document).on('click', 'a.signout-btn', function(e){
-      console.log(e);
-      if(e && e.preventDefault) { e.preventDefault() }
-      client.sign_out()
-      .then(resp => {
-        window.location.href = '/';
-      })
-    });
-  });
-</script>

@@ -4,7 +4,12 @@ $(document).ready(function(){
   let first_name_span = $('#first_name_span');
   let middle_name_span = $('#middle_name_span');
   let last_name_span = $('#last_name_span');
-  let submit_icon_btn = $('#submit-icon-btn');
+
+  let submit_new_password_btn = $('#submit_new_password_btn');
+
+  let old_password_input = $('#old_password_input');
+  let new_password_input = $('#new_password_input');
+  let new_password_verify_input = $('#new_password_verify_input');
 
   let session;
   let user_fields = {};
@@ -29,9 +34,7 @@ $(document).ready(function(){
     last_name_span.text(tools.capitalize(session.user.lname));
   }
 
-  /* --- */
-
-  submit_icon_btn.click(function(){
+  function submit_icon() {
     let file = document.getElementById('icon-input').files[0];
     let form_data = new FormData();
     form_data.append('icon_image', file);
@@ -46,6 +49,27 @@ $(document).ready(function(){
       session.user = resp.user;
       account_icon.attr("src", session.user.icon);
     })
-  });
+  }
+
+  function submit_new_password() {
+    let old_password = old_password_input.val();
+    let new_password = new_password_input.val();
+    let new_password_verify = new_password_verify_input.val();
+    tools.setActionButtonsDisabledState(true);
+    client.change_user_password({ old_password, new_password, new_password_verify })
+    .then(resp => {
+      tools.setActionButtonsDisabledState(false);
+      M.toast({html: resp.message});
+      if(resp.error) { return; }
+      old_password_input.val('');
+      new_password_input.val('');
+      new_password_verify_input.val('');
+    })
+  }
+
+  /* --- */
+
+  $(document).on('click', '#submit_icon_btn', submit_icon);
+  $(document).on('click', '#submit_new_password_btn', submit_new_password);
 
 });

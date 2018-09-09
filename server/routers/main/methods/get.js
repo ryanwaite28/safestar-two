@@ -115,7 +115,7 @@ function get_asset_fields(request, response) {
 
 
 
-/* --- Exports --- */
+/*  Exports  */
 
 module.exports = {
   welcome_page,
