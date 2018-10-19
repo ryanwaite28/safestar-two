@@ -28,6 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', express.static( chamber.paths['build'] ));
 app.use('/css', express.static( chamber.paths['css'] ));
 app.use('/js', express.static( chamber.paths['js'] ));
+app.use('/bin', express.static( chamber.paths['bin'] ));
 app.use('/images', express.static( chamber.paths['images'] ));
 app.use('/_cdn', express.static( chamber.paths['cdn'] ));
 
@@ -45,6 +46,19 @@ app.use(client_sessions({
   }
 }));
 
+/* --- Socket IO --- */
+
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+io.on('connection', function(client){
+  //
+});
+
+app.use(function(request, response, next){
+  request.io = io;
+  next();
+});
+
 /* --- Routes --- */
 
 
@@ -56,7 +70,10 @@ app.use("/api", api_router);
 
 /* --- Listen --- */
 
-app.set('port', (process.env.PORT || 3000));
-app.listen(app.get('port'), function() {
-  console.log('Listening on port ' + String(app.get('port')) + '...');
-});
+server.listen(8000);
+console.log('Listening on port 8000...');
+
+// app.set('port', (process.env.PORT || 3000));
+// app.listen(app.get('port'), function() {
+//   console.log('Listening on port ' + String(app.get('port')) + '...');
+// });

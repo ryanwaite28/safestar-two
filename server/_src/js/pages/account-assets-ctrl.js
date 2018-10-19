@@ -13,7 +13,8 @@ $(document).ready(function(){
 
   let init_promises = [
     client.check_session(),
-    client.get_user_assets()
+    client.get_user_assets(),
+    client.get_user_assets_count()
   ];
 
   Promise.all(init_promises)
@@ -26,7 +27,8 @@ $(document).ready(function(){
       user_assets[asset.unique_value] = asset;
       user_assets_list.append($(asset.dom));
     });
-    user_assets_count.text(Object.keys(user_assets).length);
+    user_assets_count.text(values[2].count);
+    if(values[2].count === 0) { return $('a#load-more-btn').remove(); }
     console.log(values, user_assets);
   })
   .catch(error => {
@@ -111,9 +113,23 @@ $(document).ready(function(){
     })
   }
 
+  function load_more_user_assets() {
+    let id_list = Object.keys(user_assets).map(function(key){ return user_assets[key].id });
+    let min_id = id_list.reduce(function(a, b){ return Math.min(a, b) });
+    client.get_user_assets(min_id)
+    .then(function(resp){
+      if(resp.user_assets.length === 0) { return $('a#load-more-btn').remove(); }
+      tools.array_sort_by(resp.user_assets, "id", "desc").forEach(function(asset) {
+        user_assets[asset.unique_value] = asset;
+        user_assets_list.append($(asset.dom));
+      });
+    });
+  }
+
   $(document).on('click', 'a#submit_new_user_asset_btn', add_user_asset);
   $(document).on('click', 'a.edit_user_asset_btn', toggle_edit_box_view);
   $(document).on('click', 'a.delete_user_asset_btn', delete_user_asset);
   $(document).on('click', 'a.submit_edits_user_asset_btn', edit_user_asset);
+  $(document).on('click', 'a#load-more-btn', load_more_user_assets);
 
 });

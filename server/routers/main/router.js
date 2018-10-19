@@ -69,20 +69,43 @@ router.get('/check_session', function(request, response){
   GET.check_session(request, response);
 });
 
+router.get('/get_user_fields_count', chamber.SessionRequired, function(request, response){
+  GET.get_user_fields_count(request, response);
+});
 router.get('/get_user_fields', chamber.SessionRequired, function(request, response){
   GET.get_user_fields(request, response);
 });
+router.get('/get_user_fields/:user_field_id', chamber.SessionRequired, function(request, response){
+  GET.get_user_fields(request, response);
+});
+router.get('/get_user_field/:user_field_unique_value', chamber.SessionRequired, function(request, response){
+  GET.get_user_field(request, response);
+});
 
+router.get('/get_user_assets_count', chamber.SessionRequired, function(request, response){
+  GET.get_user_assets_count(request, response);
+});
+router.get('/get_user_assets', chamber.SessionRequired, function(request, response){
+  GET.get_user_assets(request, response);
+});
+router.get('/get_user_assets/:user_asset_id', chamber.SessionRequired, function(request, response){
+  GET.get_user_assets(request, response);
+});
 router.get('/get_user_asset/:asset_unique_value', chamber.SessionRequired, function(request, response){
   GET.get_user_asset(request, response);
 });
 
-router.get('/get_user_assets', chamber.SessionRequired, function(request, response){
-  GET.get_user_assets(request, response);
+router.get('/get_asset_fields_count/:asset_id', chamber.SessionRequired, function(request, response){
+  GET.get_asset_fields_count(request, response);
 });
-
 router.get('/get_asset_fields/:asset_id', chamber.SessionRequired, function(request, response){
   GET.get_asset_fields(request, response);
+});
+router.get('/get_asset_fields/:asset_id/:asset_field_id', chamber.SessionRequired, function(request, response){
+  GET.get_asset_fields(request, response);
+});
+router.get('/get_asset_field/:asset_field_unique_value', chamber.SessionRequired, function(request, response){
+  GET.get_asset_field(request, response);
 });
 
 

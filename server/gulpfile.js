@@ -21,6 +21,10 @@ var paths = {
     src: '_src/js/**/*.js',
     dest: '_build/js/'
   },
+  script_maps: {
+    src: '_src/js/**/*.map',
+    dest: '_build/js/'
+  },
   pages: {
     src: '_src/html/**/*.html',
     dest: '_build/html/'
@@ -48,6 +52,11 @@ function scripts() {
     .pipe(gulp.dest(paths.scripts.dest));
 }
 
+function script_maps() {
+  return gulp.src(paths.script_maps.src, { sourcemaps: true })
+    .pipe(gulp.dest(paths.script_maps.dest));
+}
+
 function pages() {
   return gulp.src(paths.pages.src)
     // .pipe(htmlmin({collapseWhitespace: true}))
@@ -58,6 +67,7 @@ function pages() {
 function watch() {
   gulp.watch(paths.scripts.src, scripts);
   gulp.watch(paths.styles.src, styles);
+  gulp.watch(paths.script_maps.src, script_maps);
   gulp.watch(paths.pages.src, pages);
 }
 
@@ -71,13 +81,15 @@ function build() {
 
 exports.styles = styles;
 exports.scripts = scripts;
+exports.script_maps = script_maps;
 exports.pages = pages;
 exports.watch = watch;
 
 gulp.task('styles', styles);
 gulp.task('scripts', scripts);
+gulp.task('script_maps', script_maps);
 gulp.task('pages', pages);
-gulp.task('watch', watch);
 
+gulp.task('watch', watch);
 gulp.task('build', build);
 gulp.task('default', build);

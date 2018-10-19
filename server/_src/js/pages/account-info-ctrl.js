@@ -13,7 +13,8 @@ $(document).ready(function(){
 
   let init_promises = [
     client.check_session(),
-    client.get_user_fields()
+    client.get_user_fields(),
+    client.get_user_fields_count()
   ];
 
   Promise.all(init_promises)
@@ -22,12 +23,13 @@ $(document).ready(function(){
     first_name_span.text(tools.capitalize(session.user.fname));
     middle_name_span.text(tools.capitalize(session.user.mname));
     last_name_span.text(tools.capitalize(session.user.lname));
-    tools.array_sort_by(values[1].user_fields, "id", "desc").forEach(field => {
+    tools.array_sort_by(values[1].user_fields, "id", "desc").forEach(function(field) {
       user_fields[field.unique_value] = field;
       user_fields_list.append($(field.dom));
     });
-    user_fields_count.text(Object.keys(user_fields).length);
-    console.log(values, user_fields);
+    user_fields_count.text(values[2].count);
+    if(values[2].count === 0) { return $('a#load-more-btn').remove(); }
+    // console.log(values, user_fields);
   })
   .catch(error => {
     console.log('error', error);
@@ -48,7 +50,7 @@ $(document).ready(function(){
     let user_field_value = new_user_field_value.val();
     tools.setActionButtonsDisabledState(true);
     client.add_user_field({ user_field_name, user_field_value })
-    .then(resp => {
+    .then(function(resp) {
       console.log(resp);
       tools.setActionButtonsDisabledState(false);
       window.M.toast({html: resp.message});
@@ -74,7 +76,7 @@ $(document).ready(function(){
 
     tools.setActionButtonsDisabledState(true);
     client.edit_user_field({ user_field_name: name, user_field_value: value, user_field_id: field.id })
-    .then(resp => {
+    .then(function(resp) {
       console.log(resp);
       tools.setActionButtonsDisabledState(false);
       window.M.toast({html: resp.message});
@@ -98,7 +100,7 @@ $(document).ready(function(){
 
     tools.setActionButtonsDisabledState(true);
     client.delete_user_field({ user_field_id: field.id })
-    .then(resp => {
+    .then(function(resp) {
       console.log(resp);
       tools.setActionButtonsDisabledState(false);
       window.M.toast({html: resp.message});
@@ -112,9 +114,23 @@ $(document).ready(function(){
     })
   }
 
+  function load_more_user_info() {
+    let id_list = Object.keys(user_fields).map(function(key){ return user_fields[key].id });
+    let min_id = id_list.reduce(function(a, b){ return Math.min(a, b) });
+    client.get_user_fields(min_id)
+    .then(function(resp){
+      if(resp.user_fields.length === 0) { return $('a#load-more-btn').remove(); }
+      tools.array_sort_by(resp.user_fields, "id", "desc").forEach(function(field) {
+        user_fields[field.unique_value] = field;
+        user_fields_list.append($(field.dom));
+      });
+    });
+  }
+
   $(document).on('click', 'a#submit_new_user_field_btn', add_user_field);
   $(document).on('click', 'a.edit_user_field_btn', toggle_edit_box_view);
   $(document).on('click', 'a.delete_user_field_btn', delete_user_field);
   $(document).on('click', 'a.submit_edits_user_field_btn', edit_user_field);
+  $(document).on('click', 'a#load-more-btn', load_more_user_info);
 
 });

@@ -11,3 +11,19 @@
 
 <script src="/js/utils/tools.min.js"></script>
 <script src="/js/utils/http_request.min.js"></script>
+
+
+
+<script src="/bin/js/socket.io.js"></script>
+<script>
+  $(document).ready(function(){
+    let socket = io('http://localhost');
+    socket.on('connect', function(e){
+      console.log('new connection', e);
+    });
+
+    socket.on('disconnect', function(){
+      console.log('disconnected...');
+    });
+  });
+</script>

@@ -33,18 +33,45 @@ const client = (function(){
     return send_request("/check_session", "GET", null, null);
   }
 
-  Client.get_user_fields = function get_user_fields() {
-    return send_request("/get_user_fields", "GET", null, null);
+
+  Client.get_user_fields_count = function get_user_fields_count() {
+    return send_request("/get_user_fields_count", "GET", null, null);
   }
-  Client.get_user_assets = function get_user_assets() {
-    return send_request("/get_user_assets", "GET", null, null);
+  Client.get_user_fields = function get_user_fields(user_field_id) {
+    return user_field_id ?
+    send_request("/get_user_fields/" + user_field_id, "GET", null, null) :
+    send_request("/get_user_fields", "GET", null, null);
+  }
+  Client.get_user_field = function get_user_field(user_field_unique_value) {
+    return send_request("/get_user_field/" + user_field_unique_value, "GET", null, null);
+  }
+
+
+  Client.get_user_assets_count = function get_user_assets_count() {
+    return send_request("/get_user_assets_count", "GET", null, null);
+  }
+  Client.get_user_assets = function get_user_assets(user_asset_id) {
+    return user_asset_id ?
+    send_request("/get_user_assets/" + user_asset_id, "GET", null, null) :
+    send_request("/get_user_assets", "GET", null, null);
   }
   Client.get_user_asset = function get_user_asset(asset_unique_value) {
     return send_request("/get_user_asset/" + asset_unique_value, "GET", null, null);
   }
-  Client.get_asset_fields = function get_asset_fields(asset_id) {
-    return send_request("/get_asset_fields/" + asset_id, "GET", null, null);
+
+
+  Client.get_asset_fields_count = function get_asset_fields_count(asset_id) {
+    return send_request("/get_asset_fields_count/" + asset_id, "GET", null, null);
   }
+  Client.get_asset_fields = function get_asset_fields(asset_id, asset_field_id) {
+    return asset_field_id ?
+    send_request("/get_asset_fields/" + asset_id + "/" + asset_field_id, "GET", null, null) :
+    send_request("/get_asset_fields/" + asset_id, "GET", null, null);
+  }
+  Client.get_asset_field = function get_asset_field(asset_field_unique_value) {
+    return send_request("/get_asset_field/" + asset_field_unique_value, "GET", null, null);
+  }
+
   Client.get_entity_fields = function get_user_fields(entity_unique_value) {
     return send_request("/get_entity_fields" + entity_unique_value, "GET", null, null);
   }

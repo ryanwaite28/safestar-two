@@ -12,6 +12,7 @@ var paths = {
   templates: __dirname + '/_build/html/templates/',
   css: __dirname + '/_build/css/',
   js: __dirname + '/_build/js/',
+  bin: __dirname + '/_build/bin/',
   images: __dirname + '/_build/images/',
   cdn: __dirname + '/_build/_cdn/',
   glyphs: __dirname + '/_build/glyphicons/'
