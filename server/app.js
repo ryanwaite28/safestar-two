@@ -51,7 +51,7 @@ app.use(client_sessions({
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 io.on('connection', function(client){
-  //
+  
 });
 
 app.use(function(request, response, next){

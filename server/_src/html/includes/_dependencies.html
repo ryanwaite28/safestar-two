@@ -17,13 +17,32 @@
 <script src="/bin/js/socket.io.js"></script>
 <script>
   $(document).ready(function(){
-    let socket = io('http://localhost');
+    let socket = io(window.location.origin);
     socket.on('connect', function(e){
       console.log('new connection', e);
     });
-
     socket.on('disconnect', function(){
       console.log('disconnected...');
     });
+
+    window.socket_io = (function(){
+      let listeners = {};
+
+      let listen = function listen(name, callback){
+        listeners[name] = callback;
+        socket.on(name, callback);
+      }
+      let unlisten = function listen(name){
+        delete listeners[name];
+        socket.off(name);
+      }
+      let get_listeners = function get_listeners() {
+        return listeners;
+      }
+
+      return { listen, unlisten, get_listeners }
+    })();
+
+    Object.freeze(socket_io);
   });
 </script>
