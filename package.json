@@ -9,7 +9,7 @@
     "client": "cd client/safe-star && yarn start",
     "server": "nodemon server/app.js",
     "startapp": "concurrently --kill-others-on-fail \"yarn server\"",
-    "start": "yarn startapp"
+    "start": "nodemon server/app.js"
   },
   "keywords": [
     "Safe",

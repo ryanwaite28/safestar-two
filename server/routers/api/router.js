@@ -21,9 +21,7 @@ router.use(cors());
 
 
 
-router.get('/', function(request, response) {
-  GET.welcome_api(request, response);
-});
+router.get('/', GET.welcome_api);
 
 
 

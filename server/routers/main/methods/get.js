@@ -184,6 +184,8 @@ module.exports = {
   asset_fields_page,
   test_route,
   check_session,
+
+  get_user_field,
   get_user_fields,
   get_user_fields_count,
 
