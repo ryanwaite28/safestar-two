@@ -51,7 +51,7 @@ app.use(client_sessions({
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 io.on('connection', function(client){
-  
+
 });
 
 app.use(function(request, response, next){
@@ -70,8 +70,9 @@ app.use("/api", api_router);
 
 /* --- Listen --- */
 
-server.listen(8000);
-console.log('Listening on port 8000...');
+const PORT = process.env.PORT || 8000;
+server.listen(PORT);
+console.log('Listening on port ' + PORT + '...');
 
 // app.set('port', (process.env.PORT || 3000));
 // app.listen(app.get('port'), function() {
